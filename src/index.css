@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .main-container {
+    background-image: url("/assets/background.png");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: cover;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .md-container {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .md\:height {
+      height: 100vh;
+    }
+  }
+}
