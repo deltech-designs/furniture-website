@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   const [isinput, setIsInput] = useState("");
@@ -20,16 +21,16 @@ function Footer() {
 
           <ul className="mt-6 flex flex-col gap-6 font-medium">
             <li>
-              <a href="#">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="#">Shop</a>
+              <Link to="/shop">Shop</Link>
             </li>
             <li>
-              <a href="#">About</a>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <a href="#">Contact</a>
+              <Link to="/contact">Contact</Link>
             </li>
           </ul>
         </div>

@@ -16,15 +16,37 @@ export default function Shop() {
   const [totalPages, setTotalPages] = useState(0);
 
   // Fetch products based on current page when component mounts or currentPage changes
-  useEffect(() => {
-    setLoading(true);
+  // useEffect(() => {
+  //   setLoading(true);
 
-    const fetchProducts = async () => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const response = await axios.get(`https://fakestoreapi.com/products`);
+  //       const newProducts = response.data;
+  //       let render = setTotalPages(Math.ceil(newProducts.length / 10));
+  //       setProducts(render);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchProducts();
+  // }, [currentPage]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
       try {
-        const response = await axios.get(`https://fakestoreapi.com/products`);
+        const limit = 10; // Number of products to fetch per page
+        const offset = (currentPage - 1) * limit; // Calculate the offset based on the current page
+
+        const response = await axios.get(
+          `https://fakestoreapi.com/products?limit=${limit}&offset=${offset}`
+        );
+
         const newProducts = response.data;
-        let render = setTotalPages(Math.ceil(newProducts.length / 10));
-        setProducts(render);
+        setProducts(newProducts.slice(10, 20));
       } catch (error) {
         console.log(error);
       } finally {
@@ -32,60 +54,38 @@ export default function Shop() {
       }
     };
 
-    fetchProducts();
+    fetchProduct();
   }, [currentPage]);
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const limit = 10; // Number of products to fetch per page
-  //       const offset = (currentPage - 1) * limit; // Calculate the offset based on the current page
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const limit = 10; // Number of products to fetch per page
+      const offset = (currentPage - 1) * limit; // Calculate the offset based on the current page
+      try {
+        const response = await axios.get(
+          `https://fakestoreapi.com/products?limit=${limit}&offset=${offset}`
+        );
 
-  //       const response = await axios.get(
-  //         `https://fakestoreapi.com/products?limit=${limit}&offset=${offset}`
-  //       );
+        const newProducts = response.data;
 
-  //       const newProducts = response.data;
-  //       setProducts(newProducts.slice(10, 20));
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        console.log(newProducts);
 
-  //   fetchProduct();
-  // }, [currentPage]);
+        // setTotalPages(newProducts.length / 10)
+        // setTotalPages(response.data.totalPages);
+        // setProducts((prevProducts) => prevProducts);
+        // setProducts((prevProducts) => [...prevProducts, ...newProducts]);
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     const limit = 10; // Number of products to fetch per page
-  //     const offset = (currentPage - 1) * limit; // Calculate the offset based on the current page
-  //     try {
-  //       const response = await axios.get(
-  //         `https://fakestoreapi.com/products?limit=${limit}&offset=${offset}`
-  //       );
+        setProducts((prevProducts) => newProducts);
+        setCurrentPage();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //       const newProducts = response.data;
-
-  //       console.log(newProducts);
-
-  //       // setTotalPages(newProducts.length / 10)
-  //       // setTotalPages(response.data.totalPages);
-  //       // setProducts((prevProducts) => prevProducts);
-  //       // setProducts((prevProducts) => [...prevProducts, ...newProducts]);
-
-  //       setProducts((prevProducts) => newProducts);
-  //       setCurrentPage();
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchProduct();
-  // }, [currentPage]);
+    fetchProduct();
+  }, [currentPage]);
 
   // Function to navigate to the next page
   function nextPage() {
@@ -192,50 +192,54 @@ export default function Shop() {
       {/* Product */}
       <div className="mt-12">
         <div className="md:container mx-auto mt-12 w-full">
-          {loading && "Loading..."}
-          <>
-            {!loading && products.length === 0 && (
-              <>
-                <div className="flex flex-col w-full  items-center justify-center">
-                  <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
-                    <img src="" alt="wifi_image" />
-                    <h1 className="text-24 font-semibold">
-                      Oops! No Internet !
-                    </h1>
-                    <p className="">
-                      Looking like you facing a temporary network interruption.
-                      <p>Or check your check connection.</p>
-                    </p>
-                    <div className="rounded-full bg-lightgray w-20 h-20 p-3">
-                      <img src="" alt="Reload" />
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-content-center p-4">
+            {loading && "Loading..."}
+            <>
+              {!loading && products.length === 0 && (
+                <>
+                  <div className="flex flex-col w-full  items-center justify-center">
+                    <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
+                      <img src="" alt="wifi_image" />
+                      <h1 className="text-24 font-semibold">
+                        Oops! No Internet !
+                      </h1>
+                      <p className="">
+                        Looking like you facing a temporary network
+                        interruption.
+                        <p>Or check your check connection.</p>
+                      </p>
+                      <div className="rounded-full bg-lightgray w-20 h-20 p-3">
+                        <img src="" alt="Reload" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
-            )}
-          </>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-content-center p-4">
+                </>
+              )}
+            </>
             <>
               {products.length >= 1 &&
                 products.map((product, index) => (
                   <>
                     <ProductGallery key={product.id} product={product} />
 
-                    <div className="flex justify-center mt-4">
-                      <button
-                        className={`px-4 py-2 mx-2 bg-brown rounded-md ${
-                          currentPage === 1
-                            ? "cursor-not-allowed"
-                            : "cursor-pointer"
-                        }`}
-                        onClick={prevPage}
-                        disabled={currentPage === 1}
-                      >
-                        Previous
-                      </button>
+                    {index === product.length - 1 && (
+                      <div className="flex justify-center mt-4">
+                        <button
+                          className={`px-4 py-2 mx-2 bg-brown rounded-md ${
+                            currentPage === 1
+                              ? "cursor-not-allowed"
+                              : "cursor-pointer"
+                          }`}
+                          onClick={prevPage}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </button>
 
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                        (i) => (
+                        {Array.from(
+                          { length: totalPages },
+                          (_, i) => i + 1
+                        ).map((i) => (
                           <button
                             key={i}
                             className={`px-3 py-2 mx-1 rounded-md bg-dark ${
@@ -247,21 +251,21 @@ export default function Shop() {
                           >
                             {i}
                           </button>
-                        )
-                      )}
+                        ))}
 
-                      <button
-                        className={`px-4 py-2 mx-2 bg-brown rounded-md ${
-                          currentPage === totalPages
-                            ? "cursor-not-allowed"
-                            : "cursor-pointer"
-                        }`}
-                        onClick={nextPage}
-                        disabled={currentPage === totalPages}
-                      >
-                        Next
-                      </button>
-                    </div>
+                        <button
+                          className={`px-4 py-2 mx-2 bg-brown rounded-md ${
+                            currentPage === totalPages
+                              ? "cursor-not-allowed"
+                              : "cursor-pointer"
+                          }`}
+                          onClick={nextPage}
+                          disabled={currentPage === totalPages}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    )}
                   </>
                 ))}
             </>

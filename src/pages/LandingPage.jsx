@@ -68,27 +68,24 @@ export default function LandingPage() {
       <Range />
 
       <div>
-        {/* Product */}
         <div className="mt-12">
           <h1 className="text-center text-[40px] font-bold text-black">
             Our Product
           </h1>
           <div className="md:container mx-auto mt-12 w-full text-center">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-              {/* handle loading */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 ">
               {loading && "Loading..."}
 
-              {/* Handle  the error */}
               {!loading && products.length === 0 && (
                 <>
-                  <div className="flex w-max-[500px] items-center justify-center mx-auto">
+                  <div className=" w-max-[500px]  mx-auto">
                     <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
                       <CiWifiOff size={50} />
 
                       <h1 className="text-24 font-semibold">
                         Oops! No Internet!
                       </h1>
-                      <p className="">
+                      <p className="leading-normal">
                         Looking like you facing a temporary network
                         interruption.
                         <p>Or check your check connection.</p>
@@ -101,14 +98,12 @@ export default function LandingPage() {
                 </>
               )}
 
-              {/* Map all the products */}
               {products?.map((product, index) => (
                 <>
                   <ProductGallery key={product.id} product={product} />
 
-
                   {index === products.length - 1 && (
-                    <div className="flex justify-center items-center my-8 justify-self-center">
+                    <div className="flex justify-center items-center">
                       <Link to="/shop">
                         <button className="text-gold font-bold text-[16px] border-gold border-2 py-4 px-20 hover:bg-gold hover:text-white transition-all duration-500 ease-in-out ">
                           Show More
@@ -120,6 +115,7 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
+       
         </div>
       </div>
 
