@@ -20,38 +20,11 @@ export default function Shop() {
     setLoading(true);
 
     const fetchProducts = async () => {
-      let limit;
       try {
         const response = await axios.get(`https://fakestoreapi.com/products`);
-
-        console.log(response.data);
-
         const newProducts = response.data;
-        setTotalPages(Math.ceil(newProducts.length / 10));
-        console.log(newProducts);
-        // setTotalPages(response.data.totalPages);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(
-          `https://fakestoreapi.com/products?page=${currentPage}&limit=10`
-        );
-
-        console.log(response.data);
-
-        const newProducts = response.data;
-        // setTotalPages(newProducts.length / 10)
-        console.log(newProducts);
-        // setTotalPages(response.data.totalPages);
-        // setProducts((prevProducts) => prevProducts);
-        // setProducts((prevProducts) => [...prevProducts, ...newProducts]);
-        setProducts((prevProducts) => newProducts);
+        let render = setTotalPages(Math.ceil(newProducts.length / 10));
+        setProducts(render);
       } catch (error) {
         console.log(error);
       } finally {
@@ -60,8 +33,59 @@ export default function Shop() {
     };
 
     fetchProducts();
-    fetchProduct();
   }, [currentPage]);
+
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     try {
+  //       const limit = 10; // Number of products to fetch per page
+  //       const offset = (currentPage - 1) * limit; // Calculate the offset based on the current page
+
+  //       const response = await axios.get(
+  //         `https://fakestoreapi.com/products?limit=${limit}&offset=${offset}`
+  //       );
+
+  //       const newProducts = response.data;
+  //       setProducts(newProducts.slice(10, 20));
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchProduct();
+  // }, [currentPage]);
+
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     const limit = 10; // Number of products to fetch per page
+  //     const offset = (currentPage - 1) * limit; // Calculate the offset based on the current page
+  //     try {
+  //       const response = await axios.get(
+  //         `https://fakestoreapi.com/products?limit=${limit}&offset=${offset}`
+  //       );
+
+  //       const newProducts = response.data;
+
+  //       console.log(newProducts);
+
+  //       // setTotalPages(newProducts.length / 10)
+  //       // setTotalPages(response.data.totalPages);
+  //       // setProducts((prevProducts) => prevProducts);
+  //       // setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+
+  //       setProducts((prevProducts) => newProducts);
+  //       setCurrentPage();
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchProduct();
+  // }, [currentPage]);
 
   // Function to navigate to the next page
   function nextPage() {
@@ -168,53 +192,79 @@ export default function Shop() {
       {/* Product */}
       <div className="mt-12">
         <div className="md:container mx-auto mt-12 w-full">
+          {loading && "Loading..."}
+          <>
+            {!loading && products.length === 0 && (
+              <>
+                <div className="flex flex-col w-full  items-center justify-center">
+                  <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
+                    <img src="" alt="wifi_image" />
+                    <h1 className="text-24 font-semibold">
+                      Oops! No Internet !
+                    </h1>
+                    <p className="">
+                      Looking like you facing a temporary network interruption.
+                      <p>Or check your check connection.</p>
+                    </p>
+                    <div className="rounded-full bg-lightgray w-20 h-20 p-3">
+                      <img src="" alt="Reload" />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-content-center p-4">
-            {loading && "Loading..."}
-            <>{!loading && products.length === 0 && <div>Not Found</div>}</>
             <>
               {products.length >= 1 &&
                 products.map((product, index) => (
-                  <ProductGallery key={product.id} product={product} />
+                  <>
+                    <ProductGallery key={product.id} product={product} />
+
+                    <div className="flex justify-center mt-4">
+                      <button
+                        className={`px-4 py-2 mx-2 bg-brown rounded-md ${
+                          currentPage === 1
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer"
+                        }`}
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                      >
+                        Previous
+                      </button>
+
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (i) => (
+                          <button
+                            key={i}
+                            className={`px-3 py-2 mx-1 rounded-md bg-dark ${
+                              currentPage === i
+                                ? " bg-brown text-black"
+                                : "bg-brown hover:bg-lightBrown"
+                            }`}
+                            onClick={() => goToPage(i)}
+                          >
+                            {i}
+                          </button>
+                        )
+                      )}
+
+                      <button
+                        className={`px-4 py-2 mx-2 bg-brown rounded-md ${
+                          currentPage === totalPages
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer"
+                        }`}
+                        onClick={nextPage}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </>
                 ))}
             </>
-          </div>
-
-          <div className="flex justify-center mt-4">
-            <button
-              className={`px-4 py-2 mx-2 bg-brown rounded-md ${
-                currentPage === 1 ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
-              onClick={prevPage}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((i) => (
-              <button
-                key={i}
-                className={`px-3 py-2 mx-1 rounded-md bg-dark ${
-                  currentPage === i
-                    ? " bg-brown text-black"
-                    : "bg-brown hover:bg-lightBrown"
-                }`}
-                onClick={() => goToPage(i)}
-              >
-                {i}
-              </button>
-            ))}
-
-            <button
-              className={`px-4 py-2 mx-2 bg-brown rounded-md ${
-                currentPage === totalPages
-                  ? "cursor-not-allowed"
-                  : "cursor-pointer"
-              }`}
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
           </div>
         </div>
       </div>

@@ -72,19 +72,45 @@ export default function LandingPage() {
             Our Product
           </h1>
           <div className="md:container mx-auto mt-12 w-full">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-content-center p-4">
+            <div className="p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center aligns-center">
               {loading && "Loading..."}
+              <div>
+                <>
+                  {!loading && products.length === 0 && (
+                    <>
+                      <div className="flex -w-full items-center justify-center ">
+                        <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
+                          <img src="" alt="wifi_image" />
+                          <h1 className="text-24 font-semibold">
+                            Oops! No Internet!
+                          </h1>
+                          <p className="">
+                            Looking like you facing a temporary network
+                            interruption.
+                            <p>Or check your check connection.</p>
+                          </p>
+                          <div className="rounded-full bg-lightgray w-20 h-20 p-3">
+                            <img src="" alt="Reload" />
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              </div>
               {products?.map((product) => (
-                <ProductGallery key={product.id} product={product} />
+                <>
+                  <ProductGallery key={product.id} product={product} />
+                  <div className="flex justify-center items-center my-8 ">
+                    <Link to="/shop">
+                      <button className="text-gold font-bold text-[16px] border-gold border-2 py-4 px-20 hover:bg-gold hover:text-white transition-all duration-500 ease-in-out ">
+                        Show More
+                      </button>
+                    </Link>
+                  </div>
+                </>
               ))}
             </div>
-          </div>
-          <div className="flex justify-center items-center my-8 ">
-            <Link to="/shop">
-              <button className="text-gold font-bold text-[16px] border-gold border-2 py-4 px-20 hover:bg-gold hover:text-white transition-all duration-500 ease-in-out ">
-                Show More
-              </button>
-            </Link>
           </div>
         </div>
       </div>
