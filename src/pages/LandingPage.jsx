@@ -6,6 +6,8 @@ import Navbar from "../components/navbar/Navbar";
 import ProductGallery from "../components/product/Productgallery";
 import Carousel from "../components/slider/Carousel";
 import Footer from "../components/footer/footer";
+import { CiWifiOff } from "react-icons/ci";
+import { RxReload } from "react-icons/rx";
 
 export default function LandingPage() {
   const [products, setProducts] = useState([]);
@@ -71,43 +73,49 @@ export default function LandingPage() {
           <h1 className="text-center text-[40px] font-bold text-black">
             Our Product
           </h1>
-          <div className="md:container mx-auto mt-12 w-full">
-            <div className="p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center aligns-center">
+          <div className="md:container mx-auto mt-12 w-full text-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+              {/* handle loading */}
               {loading && "Loading..."}
-              <div>
+
+              {/* Handle  the error */}
+              {!loading && products.length === 0 && (
                 <>
-                  {!loading && products.length === 0 && (
-                    <>
-                      <div className="flex -w-full items-center justify-center ">
-                        <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
-                          <img src="" alt="wifi_image" />
-                          <h1 className="text-24 font-semibold">
-                            Oops! No Internet!
-                          </h1>
-                          <p className="">
-                            Looking like you facing a temporary network
-                            interruption.
-                            <p>Or check your check connection.</p>
-                          </p>
-                          <div className="rounded-full bg-lightgray w-20 h-20 p-3">
-                            <img src="" alt="Reload" />
-                          </div>
-                        </div>
+                  <div className="flex w-max-[500px] items-center justify-center mx-auto">
+                    <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
+                      <CiWifiOff size={50} />
+
+                      <h1 className="text-24 font-semibold">
+                        Oops! No Internet!
+                      </h1>
+                      <p className="">
+                        Looking like you facing a temporary network
+                        interruption.
+                        <p>Or check your check connection.</p>
+                      </p>
+                      <div className="rounded-full bg-lightgray w-20 h-20 p-5">
+                        <RxReload size={40} />
                       </div>
-                    </>
-                  )}
+                    </div>
+                  </div>
                 </>
-              </div>
-              {products?.map((product) => (
+              )}
+
+              {/* Map all the products */}
+              {products?.map((product, index) => (
                 <>
                   <ProductGallery key={product.id} product={product} />
-                  <div className="flex justify-center items-center my-8 ">
-                    <Link to="/shop">
-                      <button className="text-gold font-bold text-[16px] border-gold border-2 py-4 px-20 hover:bg-gold hover:text-white transition-all duration-500 ease-in-out ">
-                        Show More
-                      </button>
-                    </Link>
-                  </div>
+
+
+                  {index === products.length - 1 && (
+                    <div className="flex justify-center items-center my-8 justify-self-center">
+                      <Link to="/shop">
+                        <button className="text-gold font-bold text-[16px] border-gold border-2 py-4 px-20 hover:bg-gold hover:text-white transition-all duration-500 ease-in-out ">
+                          Show More
+                        </button>
+                      </Link>
+                    </div>
+                  )}
                 </>
               ))}
             </div>
