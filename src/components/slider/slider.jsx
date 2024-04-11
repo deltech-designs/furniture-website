@@ -24,10 +24,10 @@ export default function Slider({ sliders }) {
 
   return (
     <div className="w-[372px] h-[486px] relative">
-      <button className="absolute top-1/2  -left-4 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center z-10">
+      <button className="absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center z-10">
         &#10094;
       </button>
-      <button className="absolute top-1/2  -right-5 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center z-10">
+      <button className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center z-10">
         &#10095;
       </button>
       <Swiper
@@ -46,7 +46,7 @@ export default function Slider({ sliders }) {
         {sliders?.map((data) => (
           <div>
             <SwiperSlide key={data.id}>
-              <div className="w-[372px] h-[486px]">
+              <div className="w-[300px] md:w-[372px] h-[486px]">
                 <img
                   src={data.img}
                   className="w-full object-cover object-center"

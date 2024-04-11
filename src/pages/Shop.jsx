@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ProductGallery from "../components/product/Productgallery";
 import Navbar from "../components/navbar/Navbar";
+import { CiWifiOff } from "react-icons/ci";
+import { RxReload } from "react-icons/rx";
 
 // Define the Shop component
 export default function Shop() {
@@ -194,28 +196,21 @@ export default function Shop() {
         <div className="md:container mx-auto mt-12 w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-content-center p-4">
             {loading && "Loading..."}
-            <>
-              {!loading && products.length === 0 && (
-                <>
-                  <div className="flex flex-col w-full  items-center justify-center">
-                    <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
-                      <img src="" alt="wifi_image" />
-                      <h1 className="text-24 font-semibold">
-                        Oops! No Internet !
-                      </h1>
-                      <p className="">
-                        Looking like you facing a temporary network
-                        interruption.
-                        <p>Or check your check connection.</p>
-                      </p>
-                      <div className="rounded-full bg-lightgray w-20 h-20 p-3">
-                        <img src="" alt="Reload" />
-                      </div>
-                    </div>
+            {!loading && products.length === 0 && (
+              <div className="w-max-[500px] mx-auto">
+                <div className="flex flex-col items-center justify-center bg-white shadow-lg px-4 py-8 gap-4 rounded-lg w-96">
+                  <CiWifiOff size={50} />
+                  <h1 className="text-24 font-semibold">Oops! No Internet!</h1>
+                  <p className="leading-normal">
+                    Looking like you're facing a temporary network interruption.
+                    <p>Or check your connection.</p>
+                  </p>
+                  <div className="rounded-full bg-lightgray w-20 h-20 p-5">
+                    <RxReload size={40} />
                   </div>
-                </>
-              )}
-            </>
+                </div>
+              </div>
+            )}
             <>
               {products.length >= 1 &&
                 products.map((product, index) => (
