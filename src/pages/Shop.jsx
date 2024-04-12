@@ -120,6 +120,7 @@ export default function Shop() {
         className="h-[316px] p-4 flex justify-center items-center flex-col gap-3"
         style={{ backgroundImage: 'url("./assets/Shop.png")' }}
       >
+        <img src="./assets/logo_icon.png" alt="funiro logo icon" />
         <h1 className="text-48 font-semibold">Shop</h1>
         <p>
           <span className="font-bold">Home</span> &#10095; <span>Shop</span>
